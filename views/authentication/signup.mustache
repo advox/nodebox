@@ -1,0 +1,12 @@
+<h1>{{title}}</h1>
+<form action="/auth/signup" method="post">
+    <ul>
+        <li><label>Username: <input type="text" name="username"></label></li>
+        <li><label>Password: <input type="password" name="password"></label></li>
+        <li><label>Repeat password: <input type="password" name="password2"></label></li>
+        <li><input type="submit" value="Sign up"></li>
+    </ul>
+    {{#error}}
+        <p class="error">{{message}}</p>
+    {{/error}}
+</form>
