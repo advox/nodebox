@@ -45,10 +45,17 @@ var User = require('./models/Users');
 
 // Routes
 
-app.get('/', requiresLogin, function(req, res) {
+app.get('/', function(req, res) {
     res.render('index', {
         locals: {
-            title: 'Express'
+            title: 'nodebox - Home'
+        },
+        partials: {
+            ideaList: [
+                {title: "some title", content: 'content'},
+                {title: "some title", content: 'content'},
+                {title: "some title", content: 'content'}
+            ]
         }
     });
 });
@@ -65,44 +72,61 @@ app.get('/auth', function(req, res) {
     });
 });
 
-app.get('/auth/signup', function(req, res) {
-    res.render('authentication/signup', {
-        locals: {
-            title: "Register you account"
+app.post('/auth/login', function(req, res) {
+    var user = new User();
+    user.authenticate(req.body.username, req.body.password, function(user) {
+        if (user) {
+            req.session.user = user;
+            res.redirect(req.query.redir || '/');
         }
-    });
+        else {
+            res.render('authentication/index', {
+                locals: {
+                    title: "Login failed"
+                }
+            });
+        }
+    })
+});
+
+app.get('/auth/signup', function(req, res) {
+    res.render('authentication/signup');
 });
 
 app.post('/auth/signup', function(req, res) {
     if (req.body.password != req.body.password2) {
-        res.redirect('/auth/signup', {
+        res.render('authentication/signup', {
             locals: {
                 error: {
                     message: "The passwords didn't match"
                 }
             }
         });
+        return false;
     }
 
-//    var user = new User();
-//    user.create(newUser, function(err) {
-//        if (err) {
-//            if (err.type == 'pw_mismatch') {
-//
-//                return false;
-//            }
-//            if (err.type == 'user_exists') {
-//                res.redirect('/auth/signup', {
-//                    locals: {
-//                        error:{
-//                            message: "A user with that name already exists, please choose another one"
-//                        }
-//                    }
-//                });
-//                return false;
-//            }
-//        }
-//    });
+    var user = new User();
+    var newUser = {
+        username: req.body.username,
+        password: req.body.password
+    };
+    user.create(newUser, function(err) {
+        if (err) {
+            if (err.type == 'user_exists') {
+                res.render('authentication/signup', {
+                    locals: {
+                        error:{
+                            message: "A user with that name already exists, please choose another one"
+                        }
+                    }
+                });
+                return false;
+            }
+        }
+        else {
+            res.redirect('/ideas');
+        }
+    });
 });
 
 /*

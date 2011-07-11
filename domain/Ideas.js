@@ -6,8 +6,8 @@ var Mongoose = require('mongoose'),
     Users = require('./Users');
 
 var IdeaSchema = new Schema({
-    'id': Number,
- //   'author': [Users],
+    'id': {type: Number, unique: true},
+    //'author': [Users],
     'date': { type: Date, 'default': Date.now() },
     'title': String,
     'content': String,

@@ -6,27 +6,32 @@ var UserDBContext = require('../domain/Users');
 var User = function() {
     return {
         authenticate: function(username, password, callback) {
-            UserDBContext.find({username: username}, function(err, user) {
+            UserDBContext.findOne({username: username}, function(err, user) {
                 if (err) {
                     callback(null);
+                    return;
                 }
-                if (user.password == password) {
-                    callback(user);
+                if (user != null) {
+                    if (user.password == password) {
+                        callback(user);
+                        return;
+                    }
                 }
                 callback(null);
             });
         },
         create: function(newUser, callback) {
-
-            var user = new UserDBContext();
-            user.find({username: newUser.username}, function(err, user) {
-                if (user) {
+            console.log(newUser);
+            UserDBContext.find({username: newUser.username}, function(err, existingUser) {
+                if (existingUser) {
                     var error = {
                         type: "user_exists"
                     };
                     callback(error);
+                    return false;
                 }
                 else {
+                    var user = new UserDBContext();
                     user.username = newUser.username;
                     user.password = newUser.password;
                     user.save(function(err) {
@@ -37,6 +42,22 @@ var User = function() {
                             callback();
                         }
                     });
+                }
+            });
+        },
+        update: function(username, updates, callback) {
+            UserDBContext.findOne({username: user}, function(err, user) {
+                if (updates.password) {
+                    user.password = updates.password;
+                }
+                if (updates.firstName) {
+                    user.firstName = updates.firstName;
+                }
+                if (updates.lastName) {
+                    user.lastName = updates.lastName;
+                }
+                if (updates.email) {
+                    user.email = updates.email;
                 }
             });
         }

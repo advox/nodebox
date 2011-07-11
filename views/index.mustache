@@ -1,2 +1,6 @@
-<h1>{{title}}</h1>
-<p><a href="/idea/create">Create a new idea</a></p>
+{{^ideas}}
+<p>There are no ideas yet. Why don't you be the <a href="/idea/create">first to make one?</a></p>
+{{/ideas}}
+{{#ideas}}
+<p>Create a new <a href="/idea/create">idea for us</a></p>
+{{/ideas}}
