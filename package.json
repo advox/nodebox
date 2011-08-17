@@ -1,11 +1,23 @@
 {
-    "name": "nodebox"
-  , "version": "0.0.1"
-  , "private": true
-  , "dependencies": {
-      "express": "2.4.0"
-    , "stache": ">=0.1.0"
-    , "mongoose": "1.6.0"
-    , "less": "1.1.2"
-  }
+  "name": "nodebox",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "2.4.0",
+    "stache": ">=0.1.0",
+    "mongoose": "1.6.0",
+    "less": "1.1.2"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": "*"
+  },
+  "author": "Jesper Haug Karsrud",
+  "description": "Nodebox is a votebox written in node",
+  "homepage": "http://github.com/jkarsrud/nodebox",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jkarsrud/nodebox.git"
+  },
+  "main": "app.js"
 }
