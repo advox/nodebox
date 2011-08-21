@@ -6,24 +6,21 @@ var UserDBContext = require('../domain/Users');
 var User = function() {
     return {
         authenticate: function(username, password, callback) {
-            UserDBContext.findOne({username: username}, function(err, user) {
+            UserDBContext.findOne({'username': username}, function(err, user) {
                 if (err) {
-                    callback(null);
+                    callback(err);
                     return;
                 }
                 if (user != null) {
                     if (user.password == password) {
                         callback(user);
-                        return;
                     }
                 }
-                callback(null);
             });
         },
         create: function(newUser, callback) {
-            console.log(newUser);
             UserDBContext.find({username: newUser.username}, function(err, existingUser) {
-                if (existingUser) {
+                if (existingUser.length) {
                     var error = {
                         type: "user_exists"
                     };
@@ -31,9 +28,10 @@ var User = function() {
                     return false;
                 }
                 else {
-                    var user = new UserDBContext();
-                    user.username = newUser.username;
-                    user.password = newUser.password;
+                    var user = new UserDBContext({
+                        username: newUser.username,
+                        password: newUser.password
+                    });
                     user.save(function(err) {
                         if (err) {
                             console.log(err);

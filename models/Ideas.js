@@ -6,10 +6,7 @@ var IdeaDBContext = require('../domain/Ideas');
 var Idea = function() {
     return {
         create: function(newIdea, success) {
-            var idea = new IdeaDBContext();
-            idea.title = newIdea.title;
-            idea.date = newIdea.date;   
-            idea.content = newIdea.content;
+            var idea = new IdeaDBContext({title: newIdea.title, content: newIdea.content});
             idea.save(function(err) {
                 if(err){
                     console.log(err);

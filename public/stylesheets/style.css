@@ -13,3 +13,12 @@ body {
 a {
   color: #00B7FF;
 }
+h1, h2 {
+  font-family: "Amaranth", sans-serif;
+}
+#mainnav ul {
+  list-style: none;
+}
+#mainnav ul li {
+  display: inline-block;
+}

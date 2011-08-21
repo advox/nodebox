@@ -1,7 +1,6 @@
 var Mongoose = require('mongoose'),
-    Schema = Mongoose.Schema;
-
-var UserSchema = new Schema({
+    Schema = Mongoose.Schema,
+    UserSchema = new Schema({
     'id': {type: Number, unique: true },
     'firstName': String,
     'lastName': String,
@@ -10,8 +9,8 @@ var UserSchema = new Schema({
     'password': String
 });
 
-Mongoose.connect('mongodb://localhost/nodebox');
 Mongoose.model('User', UserSchema);
+Mongoose.connect('mongodb://localhost/nodebox');
 
 var User = Mongoose.model('User');
 
