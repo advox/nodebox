@@ -1,0 +1,86 @@
+body {
+  background: #dbe9f3;
+  font: 14px Helvetica, Arial, sans-serif;
+  padding: 0;
+  margin: 0;
+}
+#page {
+  margin: 20px auto;
+  width: 940px;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+}
+#page header h1 {
+  font-size: 50px;
+  margin: 0;
+  padding: 0;
+  float: left;
+}
+a {
+  color: #00B7FF;
+}
+h1, h2 {
+  font-family: "Amaranth", sans-serif;
+  font-weight: normal;
+}
+#mainnav {
+  float: right;
+}
+#mainnav ul {
+  list-style: none;
+}
+#mainnav ul li {
+  display: inline-block;
+  margin: 0 0 0 10px;
+  font-size: 18px;
+}
+#content {
+  clear: both;
+  margin: 20px 0;
+}
+#ideas {
+  clear: both;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 600px;
+}
+#ideas li {
+  clear: both;
+  display: block;
+  height: 100px;
+  margin: 10px 0;
+}
+#ideas li h2 {
+  margin: 0;
+  padding: 0;
+}
+#ideas li p {
+  margin: 5px 0;
+  padding: 0;
+}
+#ideas li .votes {
+  margin: 0 20px 0 0;
+  text-align: center;
+  height: 100px;
+  width: 100px;
+}
+#ideas li .votes span {
+  display: block;
+  font-size: 20px;
+  font-weight: bold;
+}
+#ideas li .idea {
+  margin: 0;
+  padding: 10px;
+  width: 450px;
+  height: 80px;
+  background: rgba(0, 0, 0, 0.05);
+}
+#ideas li .votes, #ideas li .idea {
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  float: left;
+}

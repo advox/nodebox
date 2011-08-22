@@ -1,9 +1,18 @@
 <ul id="ideas">
     {{#ideas}}
     <li data-ideaid="{{id}}">
-        <h2>{{title}}</h2>
-        <p>{{content}}</p>
-        <p>Created on {{date}} with {{voted}} votes</p>
+        <div class="votes">
+            <div>
+                <span>{{votes}}</span>
+            </div>
+            <div>
+                <a href="/idea/vote/{{id}}">Upvote</a>
+            </div>
+        </div>
+        <div class="idea">
+            <h2>{{title}}</h2>
+            <p class="content">{{content}}</p>
+        </div>
     </li>
     {{/ideas}}
 </ul>

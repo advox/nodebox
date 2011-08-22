@@ -6,6 +6,7 @@ var Mongoose = require('mongoose'),
     IdeaSchema = new Schema({
         'date': { type: Date, 'default': Date.now() },
         'title': String,
+        'description': String,
         'content': String,
         'votes': { type: Number, 'default': 0 }
     });

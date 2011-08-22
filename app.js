@@ -30,61 +30,23 @@ app.configure('production', function() {
     app.use(express.errorHandler());
 });
 
+// Functions
+function requiresLogin(req, res, next) {
+    if (req.session.user) {
+        isAuthenticated = true;
+        next();
+    }
+    else {
+        res.redirect('/auth?redir=' + req.url);
+    }
+}
+
 // DB Stuff
 var Idea = require('./models/Ideas');
 var User = require('./models/Users');
 
-
-var AuthController = {
-    requiresLogin: function(req, res, next) {
-        if (req.session.user) {
-            isAuthenticated = true;
-            next();
-        }
-        else {
-            res.redirect('/auth?redir=' + req.url);
-        }
-    },
-    signup: function(req, res) {
-        if (req.body.password != req.body.password2) {
-            res.render('authentication/signup', {
-                locals: {
-                    error: {
-                        message: "The passwords didn't match"
-                    }
-                }
-            });
-            return false;
-        }
-
-        var user = new User();
-        var newUser = {
-            username: req.body.username,
-            password: req.body.password
-        };
-        user.create(newUser, function(err) {
-            if (err) {
-                if (err.type == 'user_exists') {
-                    res.render('authentication/signup', {
-                        locals: {
-                            error:{
-                                message: "A user with that name already exists, please choose another one"
-                            }
-                        }
-                    });
-                    return false;
-                }
-            }
-            else {
-                res.redirect('/ideas');
-            }
-        });
-    }
-};
-
-var IdeaController = {
-
-};
+// Controllers
+var AuthController = require('./controllers/AuthController');
 
 // Routes
 
@@ -92,7 +54,7 @@ app.get('/', function(req, res) {
     res.render('index', {
         locals: {
             title: 'nodebox - Home',
-            isAuthenticated: isAuthenticated
+            'isAuthenticated?': isAuthenticated
         }
     });
 });
@@ -138,7 +100,7 @@ app.post('/auth/signup', function(req, res) {
  * Ideas
  */
 
-app.get('/ideas', function(req, res) {
+app.get('/ideas', requiresLogin, function(req, res) {
     var idea = new Idea();
     idea.findAll(function(error, ideas) {
         res.render('idea/index', {
@@ -150,11 +112,11 @@ app.get('/ideas', function(req, res) {
     });
 });
 
-app.get('/idea/create', function(req, res) {
+app.get('/idea/create', requiresLogin, function(req, res) {
     res.render('idea/create');
 });
 
-app.post('/idea/create', function(req, res) {
+app.post('/idea/create', requiresLogin, function(req, res) {
     var idea = new Idea();
     var newIdea = {
         title: req.body.title,
