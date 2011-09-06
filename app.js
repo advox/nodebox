@@ -11,8 +11,7 @@ var express = require('express'),
 
 app.configure(function() {
     app.set('views', __dirname + '/views');
-    app.set('view engine', 'mustache');
-    app.register('mustache', require('stache'));
+    app.set('view engine', 'ejs');
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(express.cookieParser());
@@ -41,12 +40,9 @@ function requiresLogin(req, res, next) {
     }
 }
 
-// DB Stuff
-var Idea = require('./models/Ideas');
-var User = require('./models/Users');
-
 // Controllers
-var AuthController = require('./controllers/AuthController');
+var IdeaController = require('./controllers/IdeaController');
+var UserController = require('./controllers/UserController');
 
 // Routes
 
@@ -54,7 +50,7 @@ app.get('/', function(req, res) {
     res.render('index', {
         locals: {
             title: 'nodebox - Home',
-            'isAuthenticated?': isAuthenticated
+            isAuthenticated: isAuthenticated
         }
     });
 });
@@ -66,14 +62,14 @@ app.get('/', function(req, res) {
 app.get('/auth', function(req, res) {
     res.render('authentication/', {
         locals: {
-            title: "Easy, tiger. You need to be logged in to do that"
+            title: "Easy, tiger. You need to be logged in to do that",
+            isAuthenticated: isAuthenticated
         }
     });
 });
 
 app.post('/auth/login', function(req, res) {
-    var user = new User();
-    user.authenticate(req.body.username, req.body.password, function(user) {
+    UserController.authenticate(req.body.username, req.body.password, function(user) {
         if (user) {
             req.session.user = user;
             res.redirect(req.query.redir || '/');
@@ -81,19 +77,25 @@ app.post('/auth/login', function(req, res) {
         else {
             res.render('authentication/index', {
                 locals: {
-                    title: "Login failed"
+                    title: "Login failed",
+                    isAuthenticated: isAuthenticated
                 }
             });
         }
-    })
+    });
 });
 
 app.get('/auth/signup', function(req, res) {
-    res.render('authentication/signup');
+    res.render('authentication/signup', {
+        locals: {
+            title: "Sign up for an account!",
+            isAuthenticated: isAuthenticated
+        }
+    });
 });
 
 app.post('/auth/signup', function(req, res) {
-    AuthController.signup(req, res);
+    UserController.create(req, res);
 });
 
 /*
@@ -106,6 +108,7 @@ app.get('/ideas', requiresLogin, function(req, res) {
         res.render('idea/index', {
             locals: {
                 title: "Ideas",
+                isAuthenticated: isAuthenticated,
                 ideas: ideas
             }
         });
@@ -113,18 +116,16 @@ app.get('/ideas', requiresLogin, function(req, res) {
 });
 
 app.get('/idea/create', requiresLogin, function(req, res) {
-    res.render('idea/create');
+    res.render('idea/create', {
+        locals: {
+            title: "Create new idea",
+            isAuthenticated: isAuthenticated
+        }
+    });
 });
 
 app.post('/idea/create', requiresLogin, function(req, res) {
-    var idea = new Idea();
-    var newIdea = {
-        title: req.body.title,
-        content: req.body.content
-    };
-    idea.create(newIdea, function() {
-        res.redirect('/ideas');
-    });
+    IdeaController.create(req, res);
 });
 
 app.listen(3000);

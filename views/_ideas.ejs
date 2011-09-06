@@ -1,5 +1,5 @@
 <ul id="ideas">
-    {{#ideas}}
+    <% for(var idea in ideas) { %>
     <li data-ideaid="{{id}}">
         <div class="votes">
             <div>
@@ -14,5 +14,5 @@
             <p class="content">{{content}}</p>
         </div>
     </li>
-    {{/ideas}}
+    <% } %>
 </ul>

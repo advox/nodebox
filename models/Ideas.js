@@ -12,7 +12,7 @@ var Idea = function() {
                     console.log(err);
                 }
                 else {
-                    success();
+                    success(idea);
                 }
             });
         },

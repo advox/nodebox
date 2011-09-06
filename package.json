@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "dependencies": {
     "express": "2.4.0",
-    "stache": "0.1.0",
+    "ejs": "0.4.3",
     "mongoose": "1.6.0",
     "less": "1.1.2"
   },

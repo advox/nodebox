@@ -2,8 +2,9 @@
     <ul>
         <li><a href="/">Home</a></li>
         <li><a href="/ideas">Ideas</a></li>
-        {{#isAuthenticated?}}
+        <% if(isAuthenticated) { %>
         <li><a href="/account">Account</a></li>
-        {{/isAuthenticated?}}
+        <% } %>
+        
     </ul>
 </nav>
