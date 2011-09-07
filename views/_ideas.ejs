@@ -1,17 +1,17 @@
 <ul id="ideas">
-    <% for(var idea in ideas) { %>
-    <li data-ideaid="{{id}}">
+    <% for(var i = 0; i < ideas.length; i++) { %>
+    <li data-ideaid="<%= ideas[i].title %>">
         <div class="votes">
             <div>
-                <span>{{votes}}</span>
+                <span><%= ideas[i].votes %></span>
             </div>
             <div>
-                <a href="/idea/vote/{{id}}">Upvote</a>
+                <a href="/idea/vote/<%= ideas[i].id %>">Upvote</a>
             </div>
         </div>
         <div class="idea">
-            <h2>{{title}}</h2>
-            <p class="content">{{content}}</p>
+            <h2><%= ideas[i].title %></h2>
+            <p class="content"><%= ideas[i].content %></p>
         </div>
     </li>
     <% } %>
