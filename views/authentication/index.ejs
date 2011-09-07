@@ -1,9 +1,21 @@
 <h1><%= title %></h1>
-<form method="post" action="/auth/login">
-    <ul>
-        <li><label class="input">Username: <input type="text" name="username"></label></li>
-        <li><label class="input">Password: <input type="password" name="password"></label></li>
-        <li><input type="submit" class="btn primary" value="Log in"></li>
-    </ul>
+<form method="post" action="/auth/login" class="form-stacked">
+<fieldset>
+    <div class="clearfix">
+        <label for="username">Username</label>
+        <div class="input">
+        	<input type="text" id="username" name="username" />
+        </div>
+    </div>
+    <div class="clearfix">
+    	<label for="password">Password</label>
+        <div class="input">
+        	<input type="password" name="password" id="password" />
+        </div>
+    </div>
+    <div class="clearfix">
+    	<input type="submit" class="btn primary" value="Log in">
+    </div>
+</fieldset>	
 </form>
 <p>Don't have a account? <a href="/auth/signup">Sign up for one</a></p>

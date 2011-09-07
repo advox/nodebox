@@ -1,0 +1,30 @@
+/* Variables */
+@siteWidth: 960px;
+
+/* Mixins */
+.centered(@margin: 10px) {
+	margin: @margin auto;
+}
+
+#font {
+	.amaranth {
+		font-family: "Amaranth", sans-serif;
+	}
+}
+
+/* STYLES GOES HERE YO! */
+body {
+	#page {
+	width: @siteWidth;
+	.centered(40px);
+	padding: 20px 0;
+	}
+
+	.container {
+		width: @siteWidth;
+	}
+
+	h1, h2, h3, h4, h5, h6 {
+		#font > .amaranth();
+	}	
+}

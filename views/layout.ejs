@@ -3,20 +3,34 @@
 <head>
     <title><%= title %></title>
     <link href='http://fonts.googleapis.com/css?family=Amaranth' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="css/bootstrap.css" />
-    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="/css/bootstrap.css" />
 </head>
 <body>
-<div id="page" class="container">
-    <header>
-        <h1>nodebox</h1>
-    </header>
-    <div class="sidebar">
-        <%- partial('_navigation') %>
+<div class="topbar">
+    <div class="topbar-inner">
+        <div class="container">
+            <h3><a href="/">nodebox</a></h3>
+            <%- partial('_navigation') %>
+        </div>
     </div>
+</div>
+<div id="page" class="container">
     <section class="content">
         <%- body %>
     </section>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
+<script src="/scripts/lib/knockout-1.2.1.js"></script>
+<script>
+(function($) {
+    $("body").bind("click", function (e) {
+        $('.dropdown-toggle, .menu').parent("li").removeClass("open");
+    });
+    $(".dropdown-toggle, .menu").click(function (e) {
+        var $li = $(this).parent("li").toggleClass('open');
+        return false;
+    });
+})(jQuery);
+</script>
 </body>
 </html>

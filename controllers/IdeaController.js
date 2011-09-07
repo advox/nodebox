@@ -17,6 +17,10 @@ var IdeaController = {
 				res.redirect('/ideas');
 			}
 		});
+	},
+	findAll: function(callback) {
+		var idea = new Idea();
+		idea.findAll(callback);
 	}
 };
 exports = module.exports = IdeaController;

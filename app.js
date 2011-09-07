@@ -60,26 +60,23 @@ app.get('/', function(req, res) {
  */
 
 app.get('/auth', function(req, res) {
-    res.render('authentication/', {
-        locals: {
-            title: "Easy, tiger. You need to be logged in to do that",
-            isAuthenticated: isAuthenticated
-        }
+    res.render('authentication/index', {
+        title: "Login",
+        isAuthenticated: isAuthenticated
     });
 });
 
 app.post('/auth/login', function(req, res) {
     UserController.authenticate(req.body.username, req.body.password, function(user) {
+        console.log(user);
         if (user) {
             req.session.user = user;
             res.redirect(req.query.redir || '/');
         }
         else {
             res.render('authentication/index', {
-                locals: {
-                    title: "Login failed",
-                    isAuthenticated: isAuthenticated
-                }
+                title: "Login failed",
+                isAuthenticated: isAuthenticated
             });
         }
     });
@@ -87,10 +84,8 @@ app.post('/auth/login', function(req, res) {
 
 app.get('/auth/signup', function(req, res) {
     res.render('authentication/signup', {
-        locals: {
-            title: "Sign up for an account!",
-            isAuthenticated: isAuthenticated
-        }
+        title: "Sign up for an account!",
+        isAuthenticated: isAuthenticated
     });
 });
 
@@ -103,24 +98,19 @@ app.post('/auth/signup', function(req, res) {
  */
 
 app.get('/ideas', requiresLogin, function(req, res) {
-    var idea = new Idea();
-    idea.findAll(function(error, ideas) {
+    IdeaController.findAll(function(error, ideas) {
         res.render('idea/index', {
-            locals: {
-                title: "Ideas",
-                isAuthenticated: isAuthenticated,
-                ideas: ideas
-            }
+            title: "Ideas",
+            isAuthenticated: isAuthenticated,
+            ideas: ideas
         });
     });
 });
 
 app.get('/idea/create', requiresLogin, function(req, res) {
     res.render('idea/create', {
-        locals: {
-            title: "Create new idea",
-            isAuthenticated: isAuthenticated
-        }
+        title: "Create new idea",
+        isAuthenticated: isAuthenticated
     });
 });
 
