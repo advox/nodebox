@@ -3,7 +3,7 @@
 <head>
     <title><%= title %></title>
     <link href='http://fonts.googleapis.com/css?family=Amaranth' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="/css/bootstrap.css" />
+    <link rel="stylesheet" href="/css/bootstrap.css"/>
 </head>
 <body>
 <div class="topbar">
@@ -11,6 +11,26 @@
         <div class="container">
             <h3><a href="/">nodebox</a></h3>
             <%- partial('_navigation') %>
+            <ul class="nav secondary-nav">
+                <% if(isAuthenticated) { %>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle">Account</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/account">Details</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Sign out</a></li>
+                    </ul>
+                </li>
+                <% } else { %>
+                <li>
+                    <form action="/auth/login" method="POST">
+                        <input class="input-small" name="username" type="text" placeholder="Username">
+                        <input class="input-small" name="password" type="password" placeholder="Password">
+                        <button class="btn" type="submit">Sign in</button>
+                    </form>
+                </li>
+                <% } %>
+            </ul>
         </div>
     </div>
 </div>
@@ -22,15 +42,15 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
 <script src="/scripts/lib/knockout-1.2.1.js"></script>
 <script>
-(function($) {
-    $("body").bind("click", function (e) {
-        $('.dropdown-toggle, .menu').parent("li").removeClass("open");
-    });
-    $(".dropdown-toggle, .menu").click(function (e) {
-        var $li = $(this).parent("li").toggleClass('open');
-        return false;
-    });
-})(jQuery);
+    (function($) {
+        $("body").bind("click", function (e) {
+            $('.dropdown-toggle, .menu').parent("li").removeClass("open");
+        });
+        $(".dropdown-toggle, .menu").click(function (e) {
+            var $li = $(this).parent("li").toggleClass('open');
+            return false;
+        });
+    })(jQuery);
 </script>
 </body>
 </html>
