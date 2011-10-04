@@ -2,10 +2,11 @@
   "name": "nodebox",
   "version": "0.0.1",
   "dependencies": {
-    "express": "2.4.0",
     "ejs": "0.4.3",
-    "mongoose": "1.6.0",
-    "less": "1.1.2"
+    "express": "2.4.0",
+    "less": "1.1.2",
+    "node_hash": "0.1.0",
+    "sequelize": "1.1.2"
   },
   "devDependencies": {},
   "engines": {

@@ -1,29 +1,31 @@
 /**
  * Created at 29.08.11 23.48 by jesper
  */
-var User = require('../models/Users');
+var User = require('../models/Users'),
+    Resources = require('../resources/Resources');
 
 var UserController = {
-    authenticate: function(username, password, success) {
+    authenticate: function(username, password, callback) {
         var user = new User();
         user.authenticate(username, password, function(user) {
-            if(user) {
-                success(user);
+            if (user) {
+                callback(user);
             }
         });
     },
     create: function(req, res) {
         if (req.body.password != req.body.password2) {
             res.render('authentication/signup', {
-                locals: {
-                    error: {
-                        message: "The passwords didn't match"
-                    }
+                title: Resources.signup.header,
+                isAuthenticated: true,
+                error: {
+                    type: 'error',
+                    message: Resources.signup.password_mismatch
                 }
             });
             return false;
         }
-
+        
         var user = new User();
         var newUser = {
             username: req.body.username,
@@ -33,17 +35,17 @@ var UserController = {
             if (err) {
                 if (err.type == 'user_exists') {
                     res.render('authentication/signup', {
-                        locals: {
-                            error:{
-                                message: "A user with that name already exists, please choose another one"
-                            }
+                        title: Resources.signup.header,
+                        isAuthenticated: true,
+                        error: {
+                            type: 'warning',
+                            message: Resources.signup.user_exists
                         }
                     });
-                    return false;
                 }
             }
             else {
-                res.redirect('/ideas');
+                res.redirect('/auth');
             }
         });
     }

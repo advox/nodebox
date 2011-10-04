@@ -1,0 +1,5 @@
+<select name="project" id="project">
+    <% for(var i = 0; i < projects.length; i++) { %>
+    <option value="<%= projects[i].id %>"><%= projects[i].title %></option>
+    <% } %>
+</select>

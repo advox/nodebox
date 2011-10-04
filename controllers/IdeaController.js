@@ -1,7 +1,8 @@
 /**
  * Created at 22.08.11 23.16 by jesper
  */
-var Idea = require("../models/Ideas");
+var Idea = require("../models/Ideas.js");
+
 var IdeaController = {
 	create: function(req, res) {
 		var idea = new Idea();
@@ -9,7 +10,9 @@ var IdeaController = {
 	    var newIdea = {	
 	        title: req.body.title,
             description: req.body.description,
-	        content: req.body.content
+	        content: req.body.content,
+            user: req.session.user,
+            project: req.body.project
 	    };
 
 		idea.create(newIdea, function(idea) {

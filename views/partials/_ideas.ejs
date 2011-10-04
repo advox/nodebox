@@ -1,0 +1,15 @@
+<ul id="ideas">
+    <% for(var i = 0; i < ideas.length; i++) { %>
+    <li data-ideaid="<%= ideas[i].id %>">
+        <div class="votes">
+            <span class="vote"><%= ideas[i].votes %></span>
+            <a href="/idea/vote/<%= ideas[i].id %>">Upvote</a>
+        </div>
+        <div class="idea">
+            <h2><%= ideas[i].title %></h2>
+
+            <p><%= ideas[i].content %></p>
+        </div>
+    </li>
+    <% } %>
+</ul>

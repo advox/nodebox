@@ -1,17 +1,14 @@
-var Mongoose = require('mongoose'),
-    Schema = Mongoose.Schema,
-    UserSchema = new Schema({
-    'id': {type: Number, unique: true },
-    'firstName': String,
-    'lastName': String,
-    'username': String,
-    'email': String,
-    'password': String
-});
+/*
+ * Defines the User entity model
+ */
 
-Mongoose.model('User', UserSchema);
-Mongoose.connect('mongodb://localhost/nodebox');
-
-var User = Mongoose.model('User');
-
-exports = module.exports = User;
+exports = module.exports = function(db, DataTypes) {
+  return db.define('User', {
+       id: {type: DataTypes.INTEGER, autoIncrement: true, allowNull: false, primaryKey: true},
+      username: { type: DataTypes.STRING, allowNull: false, unique: true },
+      password: { type: DataTypes.STRING, allowNull: false },
+      salt: { type: DataTypes.STRING, allowNull: false },
+      firstName: { type: DataTypes.STRING },
+      lastName: { type: DataTypes.STRING }
+  });
+};

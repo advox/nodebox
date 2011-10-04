@@ -1,0 +1,7 @@
+<ul id="projects">
+    <% for(var i = 0; i < projects.length; i++) { %>
+    <li data-projectid="<%= projects[i].id %>">
+        <p><a href="/project/<%= projects[i].id %>"><%= projects[i].title %></a></p>
+    </li>
+    <% } %>
+</ul>

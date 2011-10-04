@@ -10,7 +10,7 @@
     <div class="topbar-inner">
         <div class="container">
             <h3><a href="/">nodebox</a></h3>
-            <%- partial('_navigation') %>
+            <%- partial('partials/_navigation') %>
             <ul class="nav secondary-nav">
                 <% if(isAuthenticated) { %>
                 <li class="dropdown">
@@ -18,7 +18,7 @@
                     <ul class="dropdown-menu">
                         <li><a href="/account">Details</a></li>
                         <li class="divider"></li>
-                        <li><a href="#">Sign out</a></li>
+                        <li><a href="/auth/signout">Sign out</a></li>
                     </ul>
                 </li>
                 <% } else { %>
@@ -34,10 +34,13 @@
         </div>
     </div>
 </div>
-<div id="page" class="container">
+<div class="container">
     <section class="content">
         <%- body %>
     </section>
+    <footer>
+        &nbsp;
+    </footer>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
 <script src="/scripts/lib/knockout-1.2.1.js"></script>

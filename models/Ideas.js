@@ -1,28 +1,49 @@
 /**
  * Created at 09.07.11 15.31 by jesper
  */
-var IdeaDBContext = require('../domain/Ideas');
+var config = require('../config.js'),
+    Sequelize = require('sequelize'),
+    db = new Sequelize(config.db.database, config.db.user, config.db.password, {
+        host: config.db.host,
+        port: config.db.port
+    }),
+    IdeaDB = db.import(__dirname + '/../domain/Ideas');
 
 var Idea = function() {
     return {
-        create: function(newIdea, success) {
-            var idea = new IdeaDBContext({title: newIdea.title, content: newIdea.content});
-            idea.save(function(err) {
-                if(err){
-                    console.log(err);
-                }
-                else {
-                    success(idea);
-                }
+        create: function(newIdea, callback) {
+            var Idea = IdeaDB.build({
+                title: newIdea.title,
+                description: newIdea.description,
+                content: newIdea.content,
+                UserId: newIdea.user.id,
+                ProjectId: newIdea.project.id
             });
+
+            Idea
+                .save()
+                .on('failure', function(err) {
+                    console.log(err);
+                })
+                .on('success', function() {
+                    callback(Idea);
+                });
+            
+        },
+        update: function(updatedValues, callback) {
+            var Idea = IdeaDB
+                        .updateAttributes(updatedValues)
+                        .on('success', function() {
+                            callback(Idea)
+                        })
         },
         findAll: function(callback) {
-            IdeaDBContext.find(function(error, ideas) {
-                callback(error, ideas);
+            IdeaDB.findAll().on('success', function(ideas) {
+                callback(ideas);
             });
         },
         find: function(id) {
-            IdeaDBContext.findOne({id: id}, function(err, idea) {
+            IdeaDB.findOne({id: id}, function(err, idea) {
                 return idea;
             })
         }

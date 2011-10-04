@@ -1,19 +1,13 @@
-/**
- * Created at 09.07.11 15.10 by jesper
+/*
+ * Defines the Idea model entity
  */
-var Mongoose = require('mongoose'),
-    Schema = Mongoose.Schema,
-    IdeaSchema = new Schema({
-        'date': { type: Date, 'default': Date.now() },
-        'title': String,
-        'description': String,
-        'content': String,
-        'votes': { type: Number, 'default': 0 }
-    });
 
-Mongoose.model('Idea', IdeaSchema);
-Mongoose.connect('mongodb://localhost/nodebox');
-
-var Idea = Mongoose.model('Idea');
-
-exports = module.exports = Idea;
+exports = module.exports = function(db, DataTypes) {
+  return db.define('Idea', {
+      id: {type: DataTypes.INTEGER, autoIncrement: true, allowNull: false, primaryKey: true},
+      title: {type: DataTypes.STRING, allowNull: false },
+      description: { type: DataTypes.TEXT, allowNull: false },
+      content: { type: DataTypes.TEXT, allowNull: false },
+      votes: { type: DataTypes.INTEGER, defaultValue: 0, allowNull: false }
+  });
+};

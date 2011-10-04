@@ -1,22 +1,30 @@
-<h1>Create a new idea!</h1>
+<div class="page-header">
+    <h1><%= title %></h1>
+</div>
 <form id="create" action="/idea/create" method="post" class="form-stacked">
     <fieldset>
         <div class="clearfix">
             <label for="title">Title</label>
             <div class="input">
-                <input type="text" name="title"/>
+                <input type="text" name="title" id="title"/>
             </div>
         </div>
         <div class="clearfix">
             <label for="description">Description</label>
             <div class="input">
-                <input type="text" name="description"/>
+                <input type="text" name="description" id="description"/>
             </div>
         </div>
         <div class="clearfix">
             <label for="content">Idea</label>
             <div class="input">
-                <textarea class="xxlarge" rows="5" name="content"></textarea>
+                <textarea class="xxlarge" rows="5" name="content" id="content"></textarea>
+            </div>
+        </div>
+        <div class="clearfix">
+            <label for="project">Project</label>
+            <div class="input">
+                <%- partial('../partials/_project_dropdown') %>
             </div>
         </div>
         <div class="clearfix">
