@@ -7,8 +7,10 @@ var express = require('express'),
     Mappings = require(__dirname + '/mappings/Mappings'),
     Resources = require(__dirname + '/resources/Resources'),
     publicDir = __dirname + '/public',
-    isAuthenticated = false;
-
+    isAuthenticated = false,
+    IdeaController = require(__dirname + '/controllers/IdeaController'),
+    UserController = require(__dirname + '/controllers/UserController'),
+    ProjectController = require(__dirname + '/controllers/ProjectController');
 
 Mappings.map();
 Mappings.sync();
@@ -35,9 +37,14 @@ app.configure('production', function() {
     app.use(express.errorHandler());
 });
 
+app.helpers({
+    Resources: Resources,
+    isAuthenticated: isAuthenticated
+});
+
 // Functions
-function requiresLogin(req, res, next) {
-    if (req.session.user) {
+function requiresLogin( req, res, next ) {
+    if ( req.session.user ) {
         isAuthenticated = true;
         next();
     }
@@ -46,25 +53,25 @@ function requiresLogin(req, res, next) {
     }
 }
 
-// Controllers
-var IdeaController = require(__dirname + '/controllers/IdeaController'),
-    UserController = require(__dirname + '/controllers/UserController'),
-    ProjectController = require(__dirname + '/controllers/ProjectController');
-
 // Routes
 
-app.get('/', function(req, res) {
-    res.render('index', {
-        title: 'nodebox - Home',
-        isAuthenticated: isAuthenticated
+app.get('/', function( req, res ) {
+    var projects;
+    ProjectController.findAll(function( p ) {
+        projects = p;
     });
+    res.render('index', {
+        isAuthenticated: isAuthenticated,
+        projects: projects
+    });
+
 });
 
 /*
  Authentication
  */
 
-app.get('/auth', function(req, res) {
+app.get('/auth', function( req, res ) {
     console.log(req.statusCode);
 
     res.render('authentication/index', {
@@ -73,9 +80,9 @@ app.get('/auth', function(req, res) {
     });
 });
 
-app.post('/auth/login', function(req, res) {
-    UserController.authenticate(req.body.username, req.body.password, function(user) {
-        if (user) {
+app.post('/auth/login', function( req, res ) {
+    UserController.authenticate(req.body.username, req.body.password, function( user ) {
+        if ( user ) {
             req.session.user = {
                 id: user.id,
                 username: user.username
@@ -87,18 +94,18 @@ app.post('/auth/login', function(req, res) {
     });
 });
 
-app.get('/auth/signup', function(req, res) {
+app.get('/auth/signup', function( req, res ) {
     res.render('authentication/signup', {
         title: Resources.signup.header,
         isAuthenticated: isAuthenticated
     });
 });
 
-app.post('/auth/signup', function(req, res) {
+app.post('/auth/signup', function( req, res ) {
     UserController.create(req, res);
 });
 
-app.get('/auth/signout', function(req, res) {
+app.get('/auth/signout', function( req, res ) {
     req.session.user = null;
     isAuthenticated = false;
     res.redirect('/');
@@ -108,8 +115,8 @@ app.get('/auth/signout', function(req, res) {
  * Projects
  */
 
-app.get('/projects', requiresLogin, function(req, res) {
-    ProjectController.findAll(function(projects) {
+app.get('/projects', requiresLogin, function( req, res ) {
+    ProjectController.findAll(function( projects ) {
         res.render('project/index', {
             title: 'Projects',
             isAuthenticated: isAuthenticated,
@@ -118,29 +125,26 @@ app.get('/projects', requiresLogin, function(req, res) {
     });
 });
 
-app.get('/project/create', requiresLogin, function(req, res) {
+app.get('/project/create', requiresLogin, function( req, res ) {
     res.render('project/create', {
         title: 'Create a new project',
         isAuthenticated: isAuthenticated
     });
 });
 
-app.post('/project/create', requiresLogin, function(req, res) {
+app.post('/project/create', requiresLogin, function( req, res ) {
     ProjectController.create(req, res);
 });
 
-app.get('/project/:id', requiresLogin, function(req, res) {
-    var ideas;
-
-    IdeaController.findAll(function(i){
-       ideas = i;
-    });
-    ProjectController.find(req.params.id, function(project){
-        res.render('project/detail', {
-            title: "Project details for " + project.title,
-            isAuthenticated: isAuthenticated,
-            project: project,
-            ideas: ideas
+app.get('/project/:id', requiresLogin, function( req, res ) {
+    ProjectController.find(req.params.id, function( project ) {
+        ProjectController.findIdeas(req.params.id, function( ideas ) {
+            res.render('project/detail', {
+                title: "Project details for " + project.title,
+                isAuthenticated: isAuthenticated,
+                project: project,
+                ideas: ideas
+            });
         });
     })
 });
@@ -149,28 +153,27 @@ app.get('/project/:id', requiresLogin, function(req, res) {
  * Ideas
  */
 
-app.get('/ideas', requiresLogin, function(req, res) {
-    IdeaController.findAll(function(ideas) {
-        res.render('idea/index', {
-            title: 'Ideas',
-            isAuthenticated: isAuthenticated,
-            ideas: ideas
-        });
-    });
-});
+/*app.get('/ideas', requiresLogin, function(req, res) {
+ IdeaController.findAll(function(ideas) {
+ res.render('idea/index', {
+ title:'Ideas',
+ isAuthenticated:isAuthenticated,
+ ideas:ideas
+ });
+ });
+ });*/
 
-app.get('/idea/create', requiresLogin, function(req, res) {
-    ProjectController.findAll(function(projects) {
+app.get('/idea/create', requiresLogin, function( req, res ) {
+    ProjectController.findAll(function( projects ) {
         res.render('idea/create', {
             title: 'Create new idea',
             isAuthenticated: isAuthenticated,
             projects: projects
         });
     });
-
 });
 
-app.post('/idea/create', requiresLogin, function(req, res) {
+app.post('/idea/create', requiresLogin, function( req, res ) {
     IdeaController.create(req, res);
 });
 

@@ -1,11 +1,21 @@
 var Resources = {
+    home: {
+        title: "Nodebox"
+    },
     login: {
-        header: 'Login to use Nodebox'
+        title: 'Login to use Nodebox'
     },
     signup: {
-        header: 'Sign up for an account!',
+        title: 'Sign up for an account!',
         user_exists: 'A user with that name already exists, please choose another one',
         password_mismatch: 'The passwords didn\'t match'
+    },
+    ideas: {
+        
+    },
+    projects: {
+        title: 'Projects',
+        create: 'Create a new project'
     }
 };
 
